@@ -1,0 +1,32 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Campus Desk{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['ui-sans-serif','system-ui']}}}}</script>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900">
+  {% if user.is_authenticated %}
+  <div class="min-h-screen lg:flex">
+    <aside class="bg-slate-950 text-slate-300 lg:min-h-screen lg:w-64">
+      <div class="flex items-center justify-between px-6 py-5"><a href="{% url 'dashboard' %}" class="text-xl font-bold tracking-tight text-white">Campus<span class="text-indigo-400">Desk</span></a><span class="text-xs text-slate-500">v1.0</span></div>
+      <nav class="flex gap-1 overflow-x-auto px-3 pb-3 lg:block lg:px-4" aria-label="Main navigation">
+        <a href="{% url 'dashboard' %}" class="block whitespace-nowrap rounded-lg px-3 py-2 text-sm hover:bg-slate-800 hover:text-white">Dashboard</a>
+        <a href="{% url 'student_list' %}" class="block whitespace-nowrap rounded-lg px-3 py-2 text-sm hover:bg-slate-800 hover:text-white">Students</a>
+        <a href="{% url 'department_list' %}" class="block whitespace-nowrap rounded-lg px-3 py-2 text-sm hover:bg-slate-800 hover:text-white">Departments</a>
+        <a href="{% url 'course_list' %}" class="block whitespace-nowrap rounded-lg px-3 py-2 text-sm hover:bg-slate-800 hover:text-white">Courses</a>
+        <a href="{% url 'enrollment_list' %}" class="block whitespace-nowrap rounded-lg px-3 py-2 text-sm hover:bg-slate-800 hover:text-white">Enrollments</a>
+        <a href="/admin/" class="block whitespace-nowrap rounded-lg px-3 py-2 text-sm hover:bg-slate-800 hover:text-white">Admin</a>
+      </nav>
+      <div class="border-t border-slate-800 px-6 py-4 text-sm"><div class="truncate text-white">{{ user.get_username }}</div><form method="post" action="{% url 'logout' %}" class="mt-2">{% csrf_token %}<button class="text-slate-400 hover:text-white">Log out</button></form></div>
+    </aside>
+    <main class="flex-1"><header class="border-b border-slate-200 bg-white px-5 py-4 lg:px-10"><div class="mx-auto max-w-7xl"><p class="text-sm text-slate-500">Academic operations</p></div></header><div class="mx-auto max-w-7xl px-5 py-8 lg:px-10">
+      {% for message in messages %}<div class="mb-5 rounded-lg border px-4 py-3 text-sm {% if message.tags == 'error' %}border-red-200 bg-red-50 text-red-700{% else %}border-emerald-200 bg-emerald-50 text-emerald-700{% endif %}">{{ message }}</div>{% endfor %}
+      {% block content %}{% endblock %}
+    </div></main>
+  </div>
+  {% else %}{% block auth_content %}{% endblock %}{% endif %}
+</body>
+</html>
