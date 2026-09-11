@@ -28,6 +28,9 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "*.vercel.app/"
 ]
+CSRF_TRUSTED_ORIGINS = [
+    "https://studendmangement-r7gph86xb-akash-5a5f.vercel.app",
+]
 
 
 # Application definition
